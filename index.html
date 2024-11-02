@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Web Scraper</h1>
+<p>Enter a URL to scrape:</p>
+<input type="text" id="urlInput" placeholder="https://example.com">
+<button id="scrapeButton">Scrape</button>
+
+<h2>Results:</h2>
+<div id="result"></div>
+
+<script>
+    document.getElementById('scrapeButton').addEventListener('click', async () => {
+        const url = document.getElementById('urlInput').value;
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = ''; // Clear previous results
+
+        if (!url) {
+            resultDiv.innerHTML = 'Please enter a URL.';
+            return;
+        }
+
+        
+            const response = await fetch('http://localhost:3001/go', { // Replace with your Vercel deployment URL
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+
+            const data = await response.json();
+            if (data.length === 0) {
+                resultDiv.innerHTML = 'No data found.';
+            } else {
+                resultDiv.innerHTML = data.map(item => `<div>${item}</div>`).join('');
+            }
+        } 
+    );
+</script>
+
+</body>
+</html>
