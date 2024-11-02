@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "functions": {
+    "server.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "routes": [
+    {
+      "src": "/go",
+      "methods": ["POST"],
+      "dest": "server.js"
+    }
+  ]
+}
